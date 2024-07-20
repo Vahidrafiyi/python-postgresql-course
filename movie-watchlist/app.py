@@ -7,7 +7,9 @@ menu = """\nPlease select one of the following options:
 3) View all movies.
 4) Watch a movie.
 5) View watched movies.
-6) Exit.
+6) Add a new user.
+7) View all users.
+8) Exit.
 
 Your selection: """
 
@@ -25,6 +27,17 @@ def prompt_add_movie():
     release_timestamp = parsed_date.timestamp()
     database.add_movie(title, release_timestamp)
 
+def prompt_add_user():
+    username = input("Username: ")
+    database.add_user(username)
+    print(f"{username} added successfully.")
+
+def prompt_get_all_users():
+    print("-- All users --")
+    users = database.get_users()
+    for index, user in enumerate(users, start = 1):
+        print(f"{index}: {user[0]}")
+
 def print_movie_list(heading, movies):
     print(f"-- {heading} movies --")
     for movie in movies:
@@ -41,9 +54,9 @@ def print_watched_movie_list(username, movies):
     
 
 def prompt_watch_movie():
-    title = input("Enter a movie title which you've wathed: ")
     username = input("Enter watcher username: ")
-    database.watch_movie(username, title)
+    movie_id = input("Movie ID: ")
+    database.watch_movie(username, movie_id)
     print("Wached successfully!")
 
 
@@ -53,7 +66,7 @@ def prompt_get_watched_movies():
     print_watched_movie_list(username, movies)
 
 
-while (user_input := input(menu)) != "6":
+while (user_input := input(menu)) != "8":
     if user_input == "1":
         prompt_add_movie()
     elif user_input == "2":
@@ -66,5 +79,9 @@ while (user_input := input(menu)) != "6":
         prompt_watch_movie()
     elif user_input == "5":
         prompt_get_watched_movies()
+    elif user_input == "6":
+        prompt_add_user()
+    elif user_input == "7":
+        prompt_get_all_users()
     else:
         print("Invalid input, please try again!")
